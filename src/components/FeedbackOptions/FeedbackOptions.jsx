@@ -1,41 +1,31 @@
-import React, { Component } from 'react';
-import { BtnList, Button } from 'components/Expresso/Expresso.styled';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { BtnList, Button } from './FeedbackOptions.styled';
 
-class FeedbackOptions extends Component {
-    objKeysValues = () => {
-      console.log(this.props, Object.entries(this.props.state), this.props.state);
-    return Object.entries(this.props.state);
-  };
+const FeedbackOptions = ({ options, toUpperCase, onClick }) => {
+  return (
+    <BtnList>
+      {options().map((stat, index) => {
+        return (
+          <li key={index}>
+            <Button
+              onClick={() => {
+                onClick(stat[0]);
+              }}
+            >
+              {toUpperCase(stat[0])}
+            </Button>
+          </li>
+        );
+      })}
+    </BtnList>
+  );
+};
 
-  toUpperCase = stat => {
-    return stat.charAt(0).toUpperCase() + stat.slice(1);
-  };
-
-  render() {
-    return (
-      <BtnList>
-        {this.objKeysValues().map((stat, index) => {
-          return (
-            <li key={index}>
-              <Button onClick={this.handleIncrement}>
-                {this.toUpperCase(stat[0])}
-              </Button>
-            </li>
-          );
-        })}
-      </BtnList>
-    );
-  }
-}
-
-// FeedbackOptions.propTypes = {
-//   stats: PropTypes.objectOf(
-//     PropTypes.shape({
-//       id: PropTypes.string.isRequired,
-//       label: PropTypes.string.isRequired,
-//       percentage: PropTypes.number.isRequired,
-//     })
-//   ),
-// };
 export default FeedbackOptions;
+
+FeedbackOptions.propTypeі = {
+  onClick: PropTypes.func,
+  options: PropTypes.func,
+  toUpperCase: PropTypes.func,
+};
