@@ -4,6 +4,7 @@ import Section from './Section/Section';
 import Statistics from './Statics/Statistics';
 import Notification from './Notification/Notification';
 import { Expres } from './App.styled';
+
 export class App extends Component {
   state = {
     good: 0,
