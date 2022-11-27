@@ -10,7 +10,7 @@ const FeedbackOptions = ({ options, toUpperCase, onClick }) => {
           <li key={index}>
             <Button
               onClick={() => {
-                onClick(stat[0])
+                onClick(stat)
               }}
             >
               {toUpperCase(stat[0])}

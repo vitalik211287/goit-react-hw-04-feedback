@@ -1,33 +1,43 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 import Section from './Section/Section';
 import Statistics from './Statics/Statistics';
 import Notification from './Notification/Notification';
 import { Expres } from './App.styled';
+import { useState } from 'react';
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+export function App() {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const setState = { good, neutral, bad };
+  const options = () => {
+    return Object.entries(setState);
   };
 
-  options = () => {
-    return Object.entries(this.state);
-  };
-
-  toUpperCase = stat => {
+  const toUpperCase = stat => {
     return stat.charAt(0).toUpperCase() + stat.slice(1);
   };
 
-  handleClick = el => {
-    this.setState(prevState => ({
-      [el]: prevState[el] + 1,
-    }));
+  const handleClick = el => {
+    switch (el[0]) {
+      case 'good':
+        setGood(good + 1);
+        break;
+      case 'neutral':
+        setNeutral(neutral + 1);
+        break;
+      case 'bad':
+        setBad(bad + 1);
+        break;
+      default:
+        return;
+    }
   };
 
-  countTotalFeedback = () => {
-    const array = this.options().map(el => {
+  const countTotalFeedback = () => {
+    const array = options().map(el => {
       return el[1];
     });
     const total = array.reduce((acc, stat) => {
@@ -35,42 +45,37 @@ export class App extends Component {
     }, 0);
     return total;
   };
-
-  countPositiveFeedbackPercentage = () => {
-    const array = this.options().map(el => {
+  console.log(options());
+  const countPositiveFeedbackPercentage = () => {
+    const array = options().map(el => {
       return el[1];
     });
-    return Math.round((array[0] / this.countTotalFeedback()) * 100);
+    return Math.round((array[0] / countTotalFeedback()) * 100);
   };
-
-  render() {
-    return (
-      <Expres>
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={this.options}
-            toUpperCase={this.toUpperCase}
-            onClick={this.handleClick}
+  return (
+    <Expres>
+      <Section title="Please leave feedback">
+        <FeedbackOptions
+          options={options}
+          toUpperCase={toUpperCase}
+          onClick={handleClick}
+        />
+      </Section>
+      <Section title="Statistics">
+        {countTotalFeedback() > 0 ? (
+          <Statistics
+            options={options}
+            toUpperCase={toUpperCase}
+            countTotalFeedback={countTotalFeedback}
+            countPositiveFeedbackPercentage={countPositiveFeedbackPercentage}
           />
-        </Section>
-        <Section title="Statistics">
-          {this.countTotalFeedback() > 0 ? (
-            <Statistics
-              options={this.options}
-              toUpperCase={this.toUpperCase}
-              countTotalFeedback={this.countTotalFeedback}
-              countPositiveFeedbackPercentage={
-                this.countPositiveFeedbackPercentage
-              }
-            />
-          ) : (
-            <Notification
-              message="There is no feedback"
-              countTotalFeedback={this.countTotalFeedback}
-            />
-          )}
-        </Section>
-      </Expres>
-    );
-  }
+        ) : (
+          <Notification
+            message="There is no feedback"
+            countTotalFeedback={countTotalFeedback}
+          />
+        )}
+      </Section>
+    </Expres>
+  );
 }
