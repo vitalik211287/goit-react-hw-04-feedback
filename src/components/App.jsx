@@ -20,8 +20,8 @@ export function App() {
     return stat.charAt(0).toUpperCase() + stat.slice(1);
   };
 
-  const handleClick = el => {
-    switch (el[0]) {
+  const handleClick = nameFeedback => {
+    switch (nameFeedback) {
       case 'good':
         setGood(good + 1);
         break;
@@ -45,7 +45,7 @@ export function App() {
     }, 0);
     return total;
   };
-  console.log(options());
+
   const countPositiveFeedbackPercentage = () => {
     const array = options().map(el => {
       return el[1];

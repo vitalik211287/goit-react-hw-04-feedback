@@ -5,15 +5,15 @@ import { BtnList, Button } from './FeedbackOptions.styled';
 const FeedbackOptions = ({ options, toUpperCase, onClick }) => {
   return (
     <BtnList>
-      {options().map((stat, index) => {
+      {options().map((nameFeedback, index) => {
         return (
           <li key={index}>
             <Button
               onClick={() => {
-                onClick(stat)
+                onClick(nameFeedback[0]);
               }}
             >
-              {toUpperCase(stat[0])}
+              {toUpperCase(nameFeedback[0])}
             </Button>
           </li>
         );
